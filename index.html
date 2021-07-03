@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Is itta611 following me?</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZV7M75Z6Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZV7M75Z6Y');
+</script>
+</head>
+<body>
+  <style>
+    p#is-itta611-following-me {
+      text-align: center;
+    }
+
+    p#is-itta611-following-me > input {
+      width: 250px;
+    }
+
+    input {
+      border: none;
+      outline: none;
+      border-bottom: 3px solid #aeaeae;
+    }
+
+    input:focus {
+      border-bottom: 3px solid #00aeff;
+    }
+
+    p#is-itta611-following-me, 
+    p#is-itta611-following-me > input {
+      font-weight: bold;
+      font-size: 36px;
+    }
+
+    #result-yes-no {
+      font-size: 32px;
+      text-align: center;
+    }
+  </style>
+  <p id="is-itta611-following-me">Is <input value="itta611" id="input-1"> following <input type="text" value="griffpatch" id="input-2">?</p>
+  <div id="result">
+    <p id="result-yes-no">No</p>
+    <div id="followers"></div>
+  </div>
+  <script>
+    const input1 = document.querySelector('#input-1');
+    const input2 = document.querySelector('#input-2');
+    const resultYesNo = document.querySelector('#result-yes-no');
+    let followingUsers;
+    URLUsername = new URL(location.href).searchParams.get('name');
+    if (URLUsername !== null) {
+      input1.value = URLUsername;
+      input2.value = 'itta611';
+    }
+    setJSON();
+    input1.addEventListener('input', function() {
+      setJSON();
+    });
+
+    input2.addEventListener('input', function() {
+      changeResult()
+    });
+
+    function changeResult() {
+      let result = 'No';
+      if (followingUsers.indexOf(input2.value) !== -1) {
+        result = 'Yes';
+      }
+      resultYesNo.textContent = result;
+    }
+
+    function setJSON() {
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', `https://ittakun.sakura.ne.jp/is-follow/script.php?name=${input1.value}`);
+      xhr.send();
+      resultYesNo.textContent = 'Loading...';
+      xhr.addEventListener('load', function() {
+        followingUsers = JSON.parse(xhr.response);
+        changeResult();
+      });
+      xhr.addEventListener('error', function() {
+        resultYesNo.textContent = 'No';
+      });
+    }
+  </script>
+</body>
+</html>
